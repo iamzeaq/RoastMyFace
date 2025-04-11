@@ -1,8 +1,11 @@
 import { useState } from "react";
 import axiosInstance from "../../axios";
 import roaster from "../assets/roaster.png";
+import { useRef } from "react";
+import html2canvas from "html2canvas";
 
 const Home = () => {
+  const roastRef = useRef(null);
   const [image, setImage] = useState(null);
   const [roastStyle, setRoastStyle] = useState("default");
   const [roasts, setRoasts] = useState([]);
@@ -38,6 +41,37 @@ const Home = () => {
     setRoasts([]);
   };
 
+  const replaceUnsupportedColors = (element) => {
+    const elements = element.querySelectorAll("*");
+    elements.forEach((el) => {
+      const style = window.getComputedStyle(el);
+      if (style.backgroundColor.includes("oklch")) {
+        el.style.backgroundColor = "#ffffff";
+      }
+      if (style.color.includes("oklch")) {
+        el.style.color = "#000000"; 
+      }
+    });
+  };
+
+  const handleDownload = async () => {
+    if (!roastRef.current) return;
+
+    replaceUnsupportedColors(roastRef.current);
+
+    const canvas = await html2canvas(roastRef.current, {
+      backgroundColor: "#fff",
+      scale: 2,
+    });
+
+    const dataURL = canvas.toDataURL("image/png");
+
+    const link = document.createElement("a");
+    link.href = dataURL;
+    link.download = "roastmyface.png";
+    link.click();
+  };
+
   const roastOptions = [
     { value: "default", label: "🔥 Default English" },
     { value: "pidgin", label: "🇳🇬 Nigerian Pidgin" },
@@ -55,7 +89,7 @@ const Home = () => {
           your stress away 😭
         </p>
 
-        <label className="ui-btn mb-4 cursor-pointer inline-block bg-white text-black font-semibold py-2 px-4 rounded-lg shadow ">
+        <label className="ui-btn mb-4 cursor-pointer inline-block bg-white text-black font-semibold py-2 px-4 rounded shadow ">
           <span>
             Upload Image 📸
             <input
@@ -100,7 +134,11 @@ const Home = () => {
         </div>
 
         {image && (
-          <div className="p-6 max-w-xs rounded bg-white">
+          <div
+            ref={roastRef}
+            id="roast-card"
+            className="p-6 max-w-xs rounded bg-white"
+          >
             <div className="mb-2">
               <img
                 src={URL.createObjectURL(image)}
@@ -134,15 +172,18 @@ const Home = () => {
         {image && (
           <button
             onClick={generateRoasts}
-            className="bg-red-600 w-xs hover:bg-red-700 text-white font-bold py-2 px-6 rounded-xl shadow-md mt-4"
+            className="bg-red-600 w-xs hover:bg-red-700 text-white rounded font-bold py-2 px-6 shadow-md mt-4"
           >
             {loading ? "Roasting..." : "Roast My Face"}
           </button>
         )}
 
         {roasts.length > 0 && (
-          <button className="mt-4 w-xs bg-green-600 hover:bg-green-700 py-2 rounded-xl font-bold">
-            Share Roast 🔗
+          <button
+            onClick={handleDownload}
+            className="mt-4 w-xs bg-green-600 hover:bg-green-700 py-2 rounded font-bold cursor-pointer"
+          >
+            Share Roast <i className="fa-solid fa-paper-plane"></i>
           </button>
         )}
 
