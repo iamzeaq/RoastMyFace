@@ -83,8 +83,8 @@ const Home = () => {
   return (
     <div className="Home">
       <div className="min-h-screen bg-orange-700 text-white flex flex-col items-center justify-center p-6">
-        <h1 className="text-4xl font-bold mb-4">RoastMyFace 🔥</h1>
-        <p className="mb-6 text-center max-w-md text-gray-400 font-medium">
+        <h1 className="text-4xl font-bold mb-4 FontdinerSwanky">RoastMyFace 🔥</h1>
+        <p className="mb-6 text-center max-w-md text-gray-400 font-medium FontdinerSwanky">
           Upload a picture and get savage roasts. Share with friends and laugh
           your stress away 😭
         </p>
@@ -102,7 +102,7 @@ const Home = () => {
         </label>
 
         <div className="mb-6 w-full max-w-[200px] text-left">
-          <label className="block text-sm font-semibold text-gray-300 mb-2">
+          <label className="block text-sm font-semibold text-gray-300 mb-2 FontdinerSwanky">
             🧠 Select Your Roast Style
           </label>
           <div
@@ -187,7 +187,7 @@ const Home = () => {
           </button>
         )}
 
-        <footer className="mt-10 text-sm text-gray-900 font-medium">
+        <footer className="mt-10 text-sm text-gray-900 font-medium FontdinerSwanky">
           &copy; 2025 RoastMyFace. Built for vibes only. 😎
         </footer>
       </div>
