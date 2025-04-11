@@ -49,27 +49,52 @@ const Home = () => {
         el.style.backgroundColor = "#ffffff";
       }
       if (style.color.includes("oklch")) {
-        el.style.color = "#000000"; 
+        el.style.color = "#000000";
       }
     });
   };
 
-  const handleDownload = async () => {
+  const handleShare = async () => {
     if (!roastRef.current) return;
 
     replaceUnsupportedColors(roastRef.current);
 
-    const canvas = await html2canvas(roastRef.current, {
-      backgroundColor: "#fff",
-      scale: 2,
-    });
+    try {
+      const canvas = await html2canvas(roastRef.current, {
+        backgroundColor: "#fff",
+        scale: 2,
+      });
 
-    const dataURL = canvas.toDataURL("image/png");
+      canvas.toBlob(async (blob) => {
+        if (!blob) return;
 
-    const link = document.createElement("a");
-    link.href = dataURL;
-    link.download = "roastmyface.png";
-    link.click();
+        const file = new File([blob], "roastmyface.png", { type: "image/png" });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: "RoastMyFace 🔥",
+              text: "Check out this roast I got! 😂",
+            });
+          } catch (err) {
+            console.error("Sharing failed", err);
+          }
+        } else {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = "roastmyface.png";
+          link.click();
+          URL.revokeObjectURL(url);
+          alert(
+            "Sharing not supported on this device. Image downloaded instead."
+          );
+        }
+      }, "image/png");
+    } catch (error) {
+      console.error("Error generating image for sharing:", error);
+    }
   };
 
   const roastOptions = [
@@ -83,7 +108,9 @@ const Home = () => {
   return (
     <div className="Home">
       <div className="min-h-screen bg-orange-700 text-white flex flex-col items-center justify-center p-6">
-        <h1 className="text-4xl font-bold mb-4 FontdinerSwanky">RoastMyFace 🔥</h1>
+        <h1 className="text-4xl font-bold mb-4 FontdinerSwanky">
+          RoastMyFace 🔥
+        </h1>
         <p className="mb-6 text-center max-w-md text-gray-400 font-medium FontdinerSwanky">
           Upload a picture and get savage roasts. Share with friends and laugh
           your stress away 😭
@@ -180,7 +207,7 @@ const Home = () => {
 
         {roasts.length > 0 && (
           <button
-            onClick={handleDownload}
+            onClick={handleShare}
             className="mt-4 w-xs bg-green-600 hover:bg-green-700 py-2 rounded font-bold cursor-pointer"
           >
             Share Roast <i className="fa-solid fa-paper-plane"></i>
