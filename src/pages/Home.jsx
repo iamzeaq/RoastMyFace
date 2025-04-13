@@ -1,8 +1,21 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import axiosInstance from "../../axios";
 import roaster from "../assets/roaster.png";
-import { useRef } from "react";
 import html2canvas from "html2canvas";
+import * as faceapi from "face-api.js";
+
+
+const loadModels = async () => {
+  try {
+    console.log("Loading face-api.js models...");
+    await faceapi.nets.tinyFaceDetector.loadFromUri("/models");
+    console.log("Models loaded successfully");
+    return true;
+  } catch (error) {
+    console.error("Error loading face-api.js models:", error);
+    return false;
+  }
+};
 
 const Home = () => {
   const roastRef = useRef(null);
@@ -11,6 +24,15 @@ const Home = () => {
   const [roasts, setRoasts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [modelsLoaded, setModelsLoaded] = useState(false);
+
+  useEffect(() => {
+    const initializeModels = async () => {
+      const success = await loadModels();
+      setModelsLoaded(success);
+    };
+    initializeModels();
+  }, []);
 
   const generateRoasts = async () => {
     if (!image) return;
@@ -35,10 +57,44 @@ const Home = () => {
     }
   };
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
-    setImage(file);
-    setRoasts([]);
+    if (!file) return;
+
+    if (!modelsLoaded) {
+      alert("Model loading failed or is still in progress. Please try again later.");
+      return;
+    }
+
+    const img = document.createElement("img");
+    img.src = URL.createObjectURL(file);
+
+    img.onload = async () => {
+      try {
+        const detections = await faceapi.detectAllFaces(
+          img,
+          new faceapi.TinyFaceDetectorOptions()
+        );
+
+        if (detections.length === 0) {
+          alert("No faces detected in the image! Please upload a photo with a person's face.");
+          setImage(null);
+          setRoasts([]);
+        } else {
+          setImage(file);
+          setRoasts([]);
+        }
+      } catch (error) {
+        console.error("Face detection error:", error);
+        alert("Error processing the image. Please try again.");
+      } finally {
+        URL.revokeObjectURL(img.src);
+      }
+    };
+    img.onerror = () => {
+      alert("Invalid image file. Please upload a valid image.");
+      URL.revokeObjectURL(img.src);
+    };
   };
 
   const replaceUnsupportedColors = (element) => {
@@ -87,9 +143,7 @@ const Home = () => {
           link.download = "roastmyface.png";
           link.click();
           URL.revokeObjectURL(url);
-          alert(
-            "Sharing not supported on this device. Image downloaded instead."
-          );
+          alert("Sharing not supported on this device. Image downloaded instead.");
         }
       }, "image/png");
     } catch (error) {
@@ -108,15 +162,12 @@ const Home = () => {
   return (
     <div className="Home">
       <div className="min-h-screen bg-orange-700 text-white flex flex-col items-center justify-center p-6">
-        <h1 className="text-4xl font-bold mb-4 FontdinerSwanky">
-          RoastMyFace 🔥
-        </h1>
+        <h1 className="text-4xl font-bold mb-4 FontdinerSwanky">RoastMyFace 🔥</h1>
         <p className="mb-6 text-center max-w-md text-gray-400 font-medium FontdinerSwanky">
-          Upload a picture and get savage roasts. Share with friends and laugh
-          your stress away 😭
+          Upload a picture and get savage roasts. Share with friends and laugh your stress away 😭
         </p>
 
-        <label className="ui-btn mb-4 cursor-pointer inline-block bg-white text-black font-semibold py-2 px-4 rounded shadow ">
+        <label className="ui-btn mb-4 cursor-pointer inline-block bg-white text-black font-semibold py-2 px-4 rounded shadow">
           <span>
             Upload Image 📸
             <input
@@ -137,7 +188,7 @@ const Home = () => {
             onMouseEnter={() => setDropdownOpen(true)}
             onMouseLeave={() => setDropdownOpen(false)}
           >
-            <button className="appearance-none w-full  bg-gray-900 text-white border border-gray-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500 px-4 py-3 shadow-sm transition-all duration-200 flex items-center justify-between">
+            <button className="appearance-none w-full bg-gray-900 text-white border border-gray-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500 px-4 py-3 shadow-sm transition-all duration-200 flex items-center justify-between">
               {selectedOption?.label || "Choose Style"}
               <span className="text-gray-400">▼</span>
             </button>
@@ -161,11 +212,7 @@ const Home = () => {
         </div>
 
         {image && (
-          <div
-            ref={roastRef}
-            id="roast-card"
-            className="p-6 max-w-xs rounded bg-white"
-          >
+          <div ref={roastRef} id="roast-card" className="p-6 max-w-xs rounded bg-white">
             <div className="mb-2">
               <img
                 src={URL.createObjectURL(image)}
@@ -199,7 +246,9 @@ const Home = () => {
         {image && (
           <button
             onClick={generateRoasts}
-            className="bg-red-600 w-xs hover:bg-red-700 text-white rounded font-bold py-2 px-6 shadow-md mt-4"
+            disabled={loading}
+            className={`bg-red-600 w-xs ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-red-700'
+              } text-white rounded font-bold py-2 px-6 shadow-md mt-4`}
           >
             {loading ? "Roasting..." : "Roast My Face"}
           </button>
@@ -215,7 +264,7 @@ const Home = () => {
         )}
 
         <footer className="mt-10 text-sm text-gray-900 font-medium FontdinerSwanky">
-          &copy; 2025 RoastMyFace. Built for vibes only. 😎
+          © 2025 RoastMyFace. Built for vibes only. 😎
         </footer>
       </div>
     </div>
