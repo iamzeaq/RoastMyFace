@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "react-router";
 import axiosInstance from "../../axios";
 import roaster from "../assets/roaster.png";
 import html2canvas from "html2canvas";
 import * as faceapi from "face-api.js";
-
 
 const loadModels = async () => {
   try {
@@ -23,6 +23,7 @@ const Home = () => {
   const [roastStyle, setRoastStyle] = useState("default");
   const [roasts, setRoasts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isFaceDetectionLoading, setIsFaceDetectionLoading] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
 
@@ -66,6 +67,8 @@ const Home = () => {
       return;
     }
 
+    setIsFaceDetectionLoading(true);
+
     const img = document.createElement("img");
     img.src = URL.createObjectURL(file);
 
@@ -75,6 +78,8 @@ const Home = () => {
           img,
           new faceapi.TinyFaceDetectorOptions()
         );
+
+        setIsFaceDetectionLoading(false);
 
         if (detections.length === 0) {
           alert("No faces detected in the image! Please upload a photo with a person's face.");
@@ -87,6 +92,7 @@ const Home = () => {
       } catch (error) {
         console.error("Face detection error:", error);
         alert("Error processing the image. Please try again.");
+        setIsFaceDetectionLoading(false);
       } finally {
         URL.revokeObjectURL(img.src);
       }
@@ -94,6 +100,7 @@ const Home = () => {
     img.onerror = () => {
       alert("Invalid image file. Please upload a valid image.");
       URL.revokeObjectURL(img.src);
+      setIsFaceDetectionLoading(false);
     };
   };
 
@@ -167,6 +174,12 @@ const Home = () => {
           Upload a picture and get savage roasts. Share with friends and laugh your stress away 😭
         </p>
 
+        <div>
+          <Link to="/mememyface" className="mb-4 inline-block bg-white text-black font-semibold py-2 px-4 rounded shadow">
+            Visit MemeMyFace
+          </Link>
+        </div>
+
         <label className="ui-btn mb-4 cursor-pointer inline-block bg-white text-black font-semibold py-2 px-4 rounded shadow">
           <span>
             Upload Image 📸
@@ -178,6 +191,13 @@ const Home = () => {
             />
           </span>
         </label>
+
+        {isFaceDetectionLoading && (
+          <div className="mb-6 text-center">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
+            <p className="mt-2 text-lg font-medium">Detecting face...</p>
+          </div>
+        )}
 
         <div className="mb-6 w-full max-w-[200px] text-left">
           <label className="block text-sm font-semibold text-gray-300 mb-2 FontdinerSwanky">
@@ -247,8 +267,7 @@ const Home = () => {
           <button
             onClick={generateRoasts}
             disabled={loading}
-            className={`bg-red-600 w-xs ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-red-700'
-              } text-white rounded font-bold py-2 px-6 shadow-md mt-4`}
+            className={`bg-red-600 w-xs ${loading ? 'opacity-70 cursor-not-allowed' : 'hover:bg-red-700'} text-white rounded font-bold py-2 px-6 shadow-md mt-4`}
           >
             {loading ? "Roasting..." : "Roast My Face"}
           </button>
