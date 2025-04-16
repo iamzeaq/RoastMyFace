@@ -1,0 +1,304 @@
+{
+  "packs": [
+    {
+      "title": "Nigerian Entertainment Space",
+      "items": [
+        {
+          "type": "statement",
+          "text": "Top 5 Nigerian celebrities whose songs sound the same."
+        },
+        {
+          "type": "question",
+          "text": "Which Nigerian artist would survive in the international market for more than a year?",
+          "required_pictures": 2
+        },
+        {
+          "type": "statement",
+          "text": "That one celebrity who pretends to be humble but posts everything they buy."
+        },
+        {
+          "type": "question",
+          "text": "Who is the most overrated Nigerian celebrity?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "Nigerian celebrities always starting drama on Twitter to promote an album."
+        },
+        {
+          "type": "question",
+          "text": "Who has the most dramatic 'breakup' stories?",
+          "required_pictures": 4
+        },
+        {
+          "type": "statement",
+          "text": "That celebrity who can't sing but always on the charts."
+        },
+        {
+          "type": "question",
+          "text": "If Nigerian celebrities were food, who would be the most overpriced?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "How many Nigerian celebrities have had to switch their brand for a new trend?"
+        },
+        {
+          "type": "question",
+          "text": "Who is the most likely Nigerian artist to start a feud just for publicity?",
+          "required_pictures": 2
+        }
+      ]
+    },
+    {
+      "title": "Nigerian Politicians",
+      "items": [
+        {
+          "type": "statement",
+          "text": "Top 3 Nigerian politicians who are always in the news for the wrong reasons."
+        },
+        {
+          "type": "question",
+          "text": "Which politician has mastered the art of dodging questions?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "The politician who says 'I am not here to make money' and then buys a private jet."
+        },
+        { 
+          "type": "question",
+          "text": "Which Nigerian politician is most likely to confuse a national address with a campaign speech?",
+          "required_pictures": 4
+        },
+        {
+          "type": "statement",
+          "text": "Politician X just announced they\u2019re buying their 5th mansion this year\u2014recession, what recession?"
+        },
+        {
+          "type": "question",
+          "text": "Which politician has the best 'I-did-not-know-that' face?",
+          "required_pictures": 2
+        },
+        {
+          "type": "statement",
+          "text": "The politician who always makes promises that never come true."
+        },
+        {
+          "type": "question",
+          "text": "Who is the politician most likely to act surprised when their corruption case gets exposed?",
+          "required_pictures": 4
+        },
+        {
+          "type": "statement",
+          "text": "The politician who can speak for 3 hours without saying anything concrete."
+        },
+        {
+          "type": "question",
+          "text": "Which Nigerian politician would be the worst at explaining a budget?",
+          "required_pictures": 3
+        }
+      ]
+    },
+    {
+      "title": "Female Actresses",
+      "items": [
+        {
+          "type": "statement",
+          "text": "That actress who is always \u2018hustling\u2019 but never working."
+        },
+        {
+          "type": "question",
+          "text": "Who is the most 'chameleon-like' actress in Nollywood?",
+          "required_pictures": 2
+        },
+        {
+          "type": "statement",
+          "text": "Actress who is always in drama but never actually acting."
+        },
+        {
+          "type": "question",
+          "text": "Which Nollywood actress would do the best in Hollywood?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "The one actress who always gets the same roles\u2014no variety."
+        },
+        {
+          "type": "question",
+          "text": "Which actress is most likely to win an award for doing absolutely nothing?",
+          "required_pictures": 4
+        },
+        {
+          "type": "statement",
+          "text": "That actress who\u2019s always playing the 'girl next door' but you know she\u2019s anything but."
+        },
+        {
+          "type": "question",
+          "text": "Who\u2019s the actress who always gets caught in a viral scandal?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "The actress who\u2019s more famous for her social media than her acting."
+        },
+        {
+          "type": "question",
+          "text": "Which actress can you bet is definitely getting a job because of her connection?",
+          "required_pictures": 2
+        }
+      ]
+    },
+    {
+      "title": "Football",
+      "items": [
+        {
+          "type": "statement",
+          "text": "Top 5 footballers who shouldn't even be playing at this point."
+        },
+        {
+          "type": "question",
+          "text": "Which footballer would make the best comedian?",
+          "required_pictures": 4
+        },
+        {
+          "type": "statement",
+          "text": "That player who celebrates scoring by doing something no one understands."
+        },
+        {
+          "type": "question",
+          "text": "Which footballer has the most ridiculous hairstyle?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "The footballer who's always injured, yet still plays every match."
+        },
+        {
+          "type": "question",
+          "text": "Who is the footballer that everyone secretly wants to see fail?",
+          "required_pictures": 2
+        },
+        {
+          "type": "statement",
+          "text": "The footballer who can do everything except play football."
+        },
+        {
+          "type": "question",
+          "text": "Which footballer would survive on a reality show?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "The footballer who is clearly only playing for the money."
+        },
+        {
+          "type": "question",
+          "text": "Who would be the worst at managing a football club?",
+          "required_pictures": 4
+        }
+      ]
+    },
+    {
+      "title": "Controversial American Celebrities",
+      "items": [
+        {
+          "type": "statement",
+          "text": "Drake\u2019s beef with Kendrick Lamar is one of the longest running non-beefs."
+        },
+        {
+          "type": "question",
+          "text": "Which American celebrity could run for president, and it wouldn't be a joke?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "50 Cent has been at war with Rick Ross for years, and it's still hilarious."
+        },
+        {
+          "type": "question",
+          "text": "Who is the most likely to come up with a feud just to stay relevant?",
+          "required_pictures": 4
+        },
+        {
+          "type": "statement",
+          "text": "Kanye West and his \u2018political ambitions\u2019\u2014no one knows what he\u2019s actually running for."
+        },
+        {
+          "type": "question",
+          "text": "Which celebrity\u2019s public relationship is clearly all for PR?",
+          "required_pictures": 2
+        },
+        {
+          "type": "statement",
+          "text": "When you have a million-dollar contract but still act like you\u2019re in the streets."
+        },
+        {
+          "type": "question",
+          "text": "Who is the most likely to make a comeback after a scandal?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "That one celebrity who always has a Twitter meltdown every month."
+        },
+        {
+          "type": "question",
+          "text": "Which celebrity would be the most interesting if they were stuck on a desert island?",
+          "required_pictures": 4
+        }
+      ]
+    },
+    {
+      "title": "Global Influencers and More",
+      "items": [
+        {
+          "type": "statement",
+          "text": "Top 5 influencers who got famous for nothing but selfies."
+        },
+        {
+          "type": "question",
+          "text": "Who has the most embarrassing viral moment in social media history?",
+          "required_pictures": 2
+        },
+        {
+          "type": "statement",
+          "text": "The influencer who's always flexing but never shows their real life."
+        },
+        {
+          "type": "question",
+          "text": "Which influencer would survive the longest on reality TV?",
+          "required_pictures": 4
+        },
+        {
+          "type": "statement",
+          "text": "That influencer who can sell anything\u2014literally, anything."
+        },
+        {
+          "type": "question",
+          "text": "Which influencer would win a gold medal in pretending?",
+          "required_pictures": 3
+        },
+        {
+          "type": "statement",
+          "text": "The influencer who\u2019s more famous for their drama than their content."
+        },
+        {
+          "type": "question",
+          "text": "Which influencer has mastered the art of looking rich without actually being rich?",
+          "required_pictures": 2
+        },
+        {
+          "type": "statement",
+          "text": "When an influencer's brand collab is more famous than the influencer themselves."
+        },
+        {
+          "type": "question",
+          "text": "Which influencer is most likely to start a \u2018scandal\u2019 for more followers?",
+          "required_pictures": 4
+        }
+      ]
+    }
+  ]
+}
