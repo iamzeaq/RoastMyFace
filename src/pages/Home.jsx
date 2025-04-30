@@ -21,10 +21,16 @@ const Home = () => {
   const roastRef = useRef(null);
   const [image, setImage] = useState(null);
   const [roastStyle, setRoastStyle] = useState("default");
+  const [category, setCategory] = useState("looks");
+  const [tone, setTone] = useState("funny");
   const [roasts, setRoasts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isFaceDetectionLoading, setIsFaceDetectionLoading] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState({
+    style: false,
+    category: false,
+    tone: false,
+  });
   const [modelsLoaded, setModelsLoaded] = useState(false);
 
   useEffect(() => {
@@ -42,6 +48,8 @@ const Home = () => {
     const formData = new FormData();
     formData.append("image", image);
     formData.append("style", roastStyle);
+    formData.append("category", category);
+    formData.append("tone", tone);
 
     try {
       const response = await axiosInstance.post("/api/roast", formData, {
@@ -164,14 +172,41 @@ const Home = () => {
     { value: "patois", label: "🇯🇲 Jamaican Patois" },
   ];
 
-  const selectedOption = roastOptions.find((opt) => opt.value === roastStyle);
+  const categoryOptions = [
+    { value: "looks", label: "👀 Looks" },
+    { value: "behavior", label: "😈 Behavior" },
+    { value: "career", label: "💼 Career" },
+    { value: "future", label: "🔮 Future" },
+    { value: "intelligence", label: "🧠 Intelligence" },
+    { value: "lifestyle", label: "🏖️ Lifestyle" },
+  ];
+
+  const toneOptions = [
+    { value: "funny", label: "😂 Funny" },
+    { value: "dark", label: "🌑 Dark" },
+    { value: "petty", label: "😏 Petty" },
+    { value: "toxic", label: "☢️ Toxic" },
+    { value: "savage", label: "🔪 Savage" },
+    { value: "light", label: "☀️ Light" },
+  ];
+
+  const selectedStyle = roastOptions.find((opt) => opt.value === roastStyle);
+  const selectedCategory = categoryOptions.find((opt) => opt.value === category);
+  const selectedTone = toneOptions.find((opt) => opt.value === tone);
+
+  const toggleDropdown = (key) => {
+    setDropdownOpen((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
 
   return (
     <div className="Home">
       <div className="min-h-screen bg-orange-700 text-white flex flex-col items-center justify-center p-6">
         <h1 className="text-4xl font-bold mb-4 FontdinerSwanky">RoastMyFace 🔥</h1>
         <p className="mb-6 text-center max-w-md text-gray-400 font-medium FontdinerSwanky">
-          Upload a picture and get savage roasts. Share with friends and laugh your stress away 😭
+          Upload a picture, choose your roast style, category, and tone, and get roasted! Share with friends and laugh away 😭
         </p>
 
         <div>
@@ -199,35 +234,101 @@ const Home = () => {
           </div>
         )}
 
-        <div className="mb-6 w-full max-w-[200px] text-left">
-          <label className="block text-sm font-semibold text-gray-300 mb-2 FontdinerSwanky">
-            🧠 Select Your Roast Style
-          </label>
-          <div
-            className="relative max-w-xs"
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
-          >
-            <button className="appearance-none w-full bg-gray-900 text-white border border-gray-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500 px-4 py-3 shadow-sm transition-all duration-200 flex items-center justify-between">
-              {selectedOption?.label || "Choose Style"}
-              <span className="text-gray-400">▼</span>
-            </button>
-            {dropdownOpen && (
-              <ul className="absolute left-0 top-full w-full bg-gray-900 border border-gray-700 shadow-lg z-50">
-                {roastOptions.map((option) => (
-                  <li
-                    key={option.value}
-                    onClick={() => {
-                      setRoastStyle(option.value);
-                      setDropdownOpen(false);
-                    }}
-                    className="px-4 py-2 text-white hover:bg-yellow-500 hover:text-black cursor-pointer transition-all"
-                  >
-                    {option.label}
-                  </li>
-                ))}
-              </ul>
-            )}
+        <div className="mb-6 w-full max-w-[200px] text-left space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-300 mb-2 FontdinerSwanky">
+              🧠 Select Roast Style
+            </label>
+            <div
+              className="relative max-w-xs"
+              onMouseEnter={() => toggleDropdown("style")}
+              onMouseLeave={() => toggleDropdown("style")}
+            >
+              <button className="appearance-none w-full bg-gray-900 text-white border border-gray-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500 px-4 py-3 shadow-sm transition-all duration-200 flex items-center justify-between">
+                {selectedStyle?.label || "Choose Style"}
+                <span className="text-gray-400">▼</span>
+              </button>
+              {dropdownOpen.style && (
+                <ul className="absolute left-0 top-full w-full bg-gray-900 border border-gray-700 shadow-lg z-50">
+                  {roastOptions.map((option) => (
+                    <li
+                      key={option.value}
+                      onClick={() => {
+                        setRoastStyle(option.value);
+                        toggleDropdown("style");
+                      }}
+                      className="px-4 py-2 text-white hover:bg-yellow-500 hover:text-black cursor-pointer transition-all"
+                    >
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-300 mb-2 FontdinerSwanky">
+              🎯 Select Category
+            </label>
+            <div
+              className="relative max-w-xs"
+              onMouseEnter={() => toggleDropdown("category")}
+              onMouseLeave={() => toggleDropdown("category")}
+            >
+              <button className="appearance-none w-full bg-gray-900 text-white border border-gray-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500 px-4 py-3 shadow-sm transition-all duration-200 flex items-center justify-between">
+                {selectedCategory?.label || "Choose Category"}
+                <span className="text-gray-400">▼</span>
+              </button>
+              {dropdownOpen.category && (
+                <ul className="absolute left-0 top-full w-full bg-gray-900 border border-gray-700 shadow-lg z-50">
+                  {categoryOptions.map((option) => (
+                    <li
+                      key={option.value}
+                      onClick={() => {
+                        setCategory(option.value);
+                        toggleDropdown("category");
+                      }}
+                      className="px-4 py-2 text-white hover:bg-yellow-500 hover:text-black cursor-pointer transition-all"
+                    >
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-300 mb-2 FontdinerSwanky">
+              😎 Select Tone
+            </label>
+            <div
+              className="relative max-w-xs"
+              onMouseEnter={() => toggleDropdown("tone")}
+              onMouseLeave={() => toggleDropdown("tone")}
+            >
+              <button className="appearance-none w-full bg-gray-900 text-white border border-gray-700 focus:border-yellow-400 focus:ring-2 focus:ring-yellow-500 px-4 py-3 shadow-sm transition-all duration-200 flex items-center justify-between">
+                {selectedTone?.label || "Choose Tone"}
+                <span className="text-gray-400">▼</span>
+              </button>
+              {dropdownOpen.tone && (
+                <ul className="absolute left-0 top-full w-full bg-gray-900 border border-gray-700 shadow-lg z-50">
+                  {toneOptions.map((option) => (
+                    <li
+                      key={option.value}
+                      onClick={() => {
+                        setTone(option.value);
+                        toggleDropdown("tone");
+                      }}
+                      className="px-4 py-2 text-white hover:bg-yellow-500 hover:text-black cursor-pointer transition-all"
+                    >
+                      {option.label}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
 

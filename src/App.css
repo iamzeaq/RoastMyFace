@@ -5,7 +5,9 @@
   font-weight: normal;
   font-style: normal;
 }
-
+html {
+  background-color: #ca3500;
+}
 
 .FontdinerSwanky {
   font-family: "FontdinerSwanky", sans-serif;

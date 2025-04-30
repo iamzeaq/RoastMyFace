@@ -16,6 +16,70 @@ const loadModels = async () => {
   }
 };
 
+const defaultPacks = [
+  {
+    id: 1,
+    title: "Politician Pack",
+    items: [
+      {
+        type: "statement",
+        text: "Who among these would make the worst president?",
+      },
+      {
+        type: "question",
+        text: "Rank these like Nigerian politicians.",
+        required_pictures: 4,
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: "Celebrity Pack",
+    items: [
+      {
+        type: "statement",
+        text: "If these people were celebrities, who's the cancelled one?",
+      },
+      {
+        type: "question",
+        text: "Rank these like problematic celebrities.",
+        required_pictures: 3,
+      },
+    ],
+  },
+  {
+    id: 3,
+    title: "Meme Pack",
+    items: [
+      {
+        type: "statement",
+        text: "Pick who belongs in a meme the most.",
+      },
+      {
+        type: "question",
+        text: "Who's giving 'meme of the year' energy?",
+        required_pictures: 2,
+      },
+    ],
+  },
+  {
+    id: 4,
+    title: "Create Your Own",
+    items: [
+      {
+        type: "statement",
+        text: "Write your own roast challenge.",
+      },
+      {
+        type: "question",
+        text: "Custom roast prompt.",
+        required_pictures: 3,
+      },
+    ],
+  },
+];
+
+
 const MemeMyFace = () => {
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [images, setImages] = useState([]);
@@ -56,69 +120,7 @@ const MemeMyFace = () => {
     fetchPacks();
   }, []);
 
-  // Default packs as fallback if JSON loading fails
-  const defaultPacks = [
-    {
-      id: 1,
-      title: "Politician Pack",
-      items: [
-        {
-          type: "statement",
-          text: "Who among these would make the worst president?",
-        },
-        {
-          type: "question",
-          text: "Rank these like Nigerian politicians.",
-          required_pictures: 4,
-        },
-      ],
-    },
-    {
-      id: 2,
-      title: "Celebrity Pack",
-      items: [
-        {
-          type: "statement",
-          text: "If these people were celebrities, who's the cancelled one?",
-        },
-        {
-          type: "question",
-          text: "Rank these like problematic celebrities.",
-          required_pictures: 3,
-        },
-      ],
-    },
-    {
-      id: 3,
-      title: "Meme Pack",
-      items: [
-        {
-          type: "statement",
-          text: "Pick who belongs in a meme the most.",
-        },
-        {
-          type: "question",
-          text: "Who's giving 'meme of the year' energy?",
-          required_pictures: 2,
-        },
-      ],
-    },
-    {
-      id: 4,
-      title: "Create Your Own",
-      items: [
-        {
-          type: "statement",
-          text: "Write your own roast challenge.",
-        },
-        {
-          type: "question",
-          text: "Custom roast prompt.",
-          required_pictures: 3,
-        },
-      ],
-    },
-  ];
+
 
   const handlePackSelect = (pack) => {
     setSelectedPack(pack);
@@ -149,12 +151,12 @@ const MemeMyFace = () => {
     setLoading(true);
 
     const formData = new FormData();
-    images.forEach((image, index) => {
+    images.forEach((image) => {
       formData.append("images", image);
     });
-    formData.append("prompt", selectedPackItem.text); // Pass the prompt to the backend
-    formData.append("packTitle", selectedPack.title); // Pass the pack title
-    formData.append("style", "default"); // Keep compatibility with existing code
+    formData.append("prompt", selectedPackItem.text);
+    formData.append("packTitle", selectedPack.title);
+    formData.append("style", "default");
 
     try {
       const response = await axiosInstance.post("/api/mememyface", formData, {
@@ -271,11 +273,10 @@ const MemeMyFace = () => {
               <button
                 key={index}
                 onClick={() => handlePackSelect(pack)}
-                className={`px-4 py-2 rounded text-sm FontdinerSwanky font-bold whitespace-nowrap shadow transition-all duration-200 ${
-                  selectedPack?.title === pack.title
-                    ? "bg-yellow-400 text-black"
-                    : "bg-white text-blue-900 hover:bg-yellow-300"
-                }`}
+                className={`px-4 py-2 rounded text-sm FontdinerSwanky font-bold whitespace-nowrap shadow transition-all duration-200 ${selectedPack?.title === pack.title
+                  ? "bg-yellow-400 text-black"
+                  : "bg-white text-blue-900 hover:bg-yellow-300"
+                  }`}
               >
                 {pack.title}
               </button>
@@ -294,7 +295,7 @@ const MemeMyFace = () => {
                     do {
                       newItem =
                         questionItems[
-                          Math.floor(Math.random() * questionItems.length)
+                        Math.floor(Math.random() * questionItems.length)
                         ];
                     } while (newItem.text === selectedPackItem.text);
 
@@ -355,9 +356,8 @@ const MemeMyFace = () => {
                       key={i}
                       className="flex flex-col items-center"
                       style={{
-                        width: `calc(${90 / images.length}vw - ${
-                          images.length * 8
-                        }px)`,
+                        width: `calc(${90 / images.length}vw - ${images.length * 8
+                          }px)`,
                       }}
                     >
                       <div className="overflow-hidden">
@@ -370,34 +370,34 @@ const MemeMyFace = () => {
                         {imageRoasts.find(
                           (roast) => roast.imageIndex === i
                         ) && (
-                          <>
-                            <div className="flex items-center gap-1 pt-1">
-                              <img
-                                src={roaster}
-                                alt="RoastMyFace logo"
-                                className="rounded-full w-5 sm:w-6"
-                              />
-                              <div>
-                                <h1 className="text-black text-[10px] sm:text-xs">
-                                  RoastMyFace
-                                </h1>
-                                <p className="text-gray-600 text-[10px] sm:text-xs">
-                                  @roastmyface
+                            <>
+                              <div className="flex items-center gap-1 pt-1">
+                                <img
+                                  src={roaster}
+                                  alt="RoastMyFace logo"
+                                  className="rounded-full w-5 sm:w-6"
+                                />
+                                <div>
+                                  <h1 className="text-black text-[10px] sm:text-xs">
+                                    RoastMyFace
+                                  </h1>
+                                  <p className="text-gray-600 text-[10px] sm:text-xs">
+                                    @roastmyface
+                                  </p>
+                                </div>
+                              </div>
+
+                              <div className="p-1 text-black">
+                                <p className="font-medium text-xs sm:text-sm">
+                                  {
+                                    imageRoasts.find(
+                                      (roast) => roast.imageIndex === i
+                                    ).roast
+                                  }
                                 </p>
                               </div>
-                            </div>
-
-                            <div className="p-1 text-black">
-                              <p className="font-medium text-xs sm:text-sm">
-                                {
-                                  imageRoasts.find(
-                                    (roast) => roast.imageIndex === i
-                                  ).roast
-                                }
-                              </p>
-                            </div>
-                          </>
-                        )}
+                            </>
+                          )}
                       </div>
 
                       {/* Add "VS" between images, except after the last one */}
@@ -423,12 +423,11 @@ const MemeMyFace = () => {
                     loading ||
                     images.length < selectedPackItem.required_pictures
                   }
-                  className={`px-6 py-2 rounded shadow font-bold ${
-                    loading ||
+                  className={`px-6 py-2 rounded shadow font-bold ${loading ||
                     images.length < selectedPackItem.required_pictures
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-yellow-400 text-black hover:bg-yellow-300"
-                  }`}
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-yellow-400 text-black hover:bg-yellow-300"
+                    }`}
                 >
                   {loading ? (
                     <>
@@ -442,13 +441,6 @@ const MemeMyFace = () => {
               </div>
             </>
           )}
-
-          {/* {imageRoasts.length > 0 && (
-                        <div ref={roastRef} className="mt-6 bg-white text-black p-4 rounded shadow max-w-xl w-full">
-                            <h3 className="text-xl font-bold mb-2">AI Roast Results</h3>
-                            <p className="text-sm text-gray-600 mb-4">Each image has been individually roasted above!</p>
-                        </div>
-                    )} */}
         </>
       )}
     </div>
